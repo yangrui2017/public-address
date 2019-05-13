@@ -1,6 +1,7 @@
 # public-address
 
 > A Vue.js project
+>主页接口链接wx.upctech.com.cn
 
 ## Build Setup
 
