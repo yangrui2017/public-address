@@ -2,8 +2,10 @@ import Vue from 'vue'
 import Router from 'vue-router'
 Vue.use(Router)
 const router = new Router({
+  //mode:history,
+  base:"/",
   routes: [{
-      path: '/mp',
+      path: '/',
       name: 'total-sharing',
       component: () => import('@/views/total-sharing')
     },

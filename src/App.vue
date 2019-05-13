@@ -16,11 +16,11 @@ export default {
       var code = _that.getQueryString("code");
       if (code !== "" && code !== null && code !== undefined) {
         _that.$http
-          .get("http://dev.upctech.com.cn/wx/js_token?code=" + code)
+          .get("http:/dev.upctech.com.cn/wx/js_token?code=" + code)
           .then(function(response) {
-            document.write(response)
             localStorage.setItem("openid", response);
-
+            console.log(response 
+            )
           })
           .catch(function(error) {
             console.log(error);
