@@ -1,7 +1,13 @@
 # public-address
 
-> A Vue.js project
->主页接口链接wx.upctech.com.cn
+> 微信公众号页面
+>分享主页total-sharing.vue
+>分享详情页user-sharing.vue
+>洗车介绍页car-wash.vue
+>公司简介company-profile.vue
+>技师推广tech-promotion.vue
+>技师招聘tech-recruitment.vue
+>查看我的分享my.vue
 
 ## Build Setup
 
