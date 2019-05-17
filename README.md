@@ -1,12 +1,12 @@
 # public-address
 
-> 微信公众号页面
->分享主页total-sharing.vue
->分享详情页user-sharing.vue
->洗车介绍页car-wash.vue
->公司简介company-profile.vue
->技师推广tech-promotion.vue
->技师招聘tech-recruitment.vue
+#### 微信公众号页面
+>分享主页total-sharing.vue<br>
+>分享详情页user-sharing.vue<br>
+>洗车介绍页car-wash.vue<br>
+>公司简介company-profile.vue<br>
+>技师推广tech-promotion.vue<br>
+>技师招聘tech-recruitment.vue<br>
 >查看我的分享my.vue
 
 ## Build Setup
