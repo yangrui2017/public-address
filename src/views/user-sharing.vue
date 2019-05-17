@@ -1,6 +1,7 @@
 <template>
   <div class="box">
-    <h2>{{operable.text}}</h2>
+    <h2>{{operable.name}}</h2>
+    <p>{{operable.text}}</p>
   </div>
 </template>
 
@@ -17,12 +18,13 @@ export default {
       }
     };
   },
-  created() {},
+  created() {
+  },
   mounted() {
     var _that = this;
-    _that._data.operable = JSON.parse(sessionStorage.getItem("operable"))[sessionStorage.getItem("operation")];
+    _that._data.operable = JSON.parse(sessionStorage.getItem("operable"));//获取菜单并显示
     var wxsdk= JSON.parse(localStorage.getItem("wxsdk"));
-      _that.wxInit(wxsdk);
+    _that.wxInit(wxsdk);
   },
   methods: {
     //微信分享
@@ -30,7 +32,8 @@ export default {
       let url = location.href.split("#")[0]; //获取锚点之前的链接
       /*this.$http.get("http://dev.upctech.com.cn/wx/js_token?code=")
         .then(function(response) {
-          console.log(response)
+          console.log(response.data);
+          this.share=response.data
         })
         .catch(function(error) {
           console.log(error);

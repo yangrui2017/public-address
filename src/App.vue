@@ -16,18 +16,17 @@ export default {
       var code = _that.getQueryString("code");
       if (code !== "" && code !== null && code !== undefined) {
         _that.$http
-          .get("http:/dev.upctech.com.cn/wx/js_token?code=" + code)
+          .get(_that.$api+"/wx/js_token?code=" + code)
           .then(function(response) {
-            localStorage.setItem("openid", response);
-            console.log(response 
-            )
+            console.log(response);
+             localStorage.setItem("openid",response.data.openid);
           })
           .catch(function(error) {
             console.log(error);
           });
       } else {
         //					获取code
-        _that.$http.post("http://dev.upctech.com.cn/wx/wx_js_sign", {
+        _that.$http.post(_that.$api+"/wx/wx_js_sign", {
             r_url: urls
           })
           .then(function(response) {
@@ -38,7 +37,7 @@ export default {
               "&redirect_uri=" +
               urls +
               "&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect";
-            window.location.replace(link);
+            //window.location.replace(link);
           })
           .catch(function(error) {
             console.log(error);

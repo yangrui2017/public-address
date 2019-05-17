@@ -6,6 +6,9 @@ import router from './router'
 import axios from 'axios'
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
+import api from './api/index.js'   //切换环境js
+// 将API方法绑定到全局
+Vue.prototype.$api = api
 
 /* eslint-disable no-new */
 new Vue({

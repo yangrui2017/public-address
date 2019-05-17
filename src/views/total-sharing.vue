@@ -5,7 +5,7 @@
             <div class="rule">{{rule}}</div>
             <div class="but">
              <div  v-for="(item,index) in list" :key="index"  @click="operable(index)">
-                 <router-link v-bind:to="item.url">{{item.name}}</router-link>
+                 <p>{{item.name}}</p>
              </div>
             </div>
 	</div>
@@ -20,16 +20,16 @@ export default {
       rule:'1.规则，是运行、运作规律所遵循的法则。规则，一般指由群众共同制定、公认或由代表人统一制定并通过的，由群体里的所有成员一起遵守的条例和章程。它存在三种形式：明规则、潜规则、元规则，无论何种规则只要违背善恶的道德必须严惩不贷以维护世间和谐；明规则是有明文规定的规则，存在需要不断完善的局',
       record:{},
       list:[
-          {name:"用户分享用户",
-          url:"/user-sharing",
+          {id:"0",
+           name:"用户分享用户",
           text:"这是用户分享用户"
           },
-          {name:"技师分享用户",
-          url:"/user-sharing",
+          {id:"1",
+           name:"技师分享用户",
           text:"这是技师分享用户"
           },
-          {name:"技师分享技师",
-          url:"/user-sharing",
+          {id:"2",
+          name:"技师分享技师",
           text:"这是技师分享技师"
           }
       ]
@@ -39,7 +39,19 @@ export default {
     
   },
    mounted(){
-       sessionStorage.setItem("operable", JSON.stringify(this.list));
+       var _that=this;
+       //localStorage.getItem("openid")
+       var openid="o0cRH0sr9U3a2mNhHHYH_GlcXdXE"
+        _that.$http.post(_that.$api+"/wx/event/user_event/list/", {
+            openid:openid
+          })
+          .then(function(response) {
+            console.log(response)
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+        
   },
   methods: {
       getQueryString(name){
@@ -50,7 +62,8 @@ export default {
 			      return null;
       },
       operable(index){
-           sessionStorage.setItem("operation", index);
+            sessionStorage.setItem("operable", JSON.stringify(this.list[index]));//保存当前点击菜单
+            this.$router.push({path:'/user-sharing'});
       }
   }
 }
