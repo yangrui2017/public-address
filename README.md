@@ -7,7 +7,7 @@
 >公司简介company-profile.vue<br>
 >技师推广tech-promotion.vue<br>
 >技师招聘tech-recruitment.vue<br>
->查看我的分享my.vue
+>查看我的分享my.vue<br>
 >被分享者所看页面share-page
 ## Build Setup
 
