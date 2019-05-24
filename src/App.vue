@@ -18,7 +18,6 @@ export default {
         _that.$http
           .get(_that.$api+"/wx/js_token?code=" + code)
           .then(function(response) {
-            console.log(response);
              localStorage.setItem("openid",response.data.openid);
           })
           .catch(function(error) {
@@ -37,7 +36,7 @@ export default {
               "&redirect_uri=" +
               urls +
               "&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect";
-            //window.location.replace(link);
+             window.location.replace(link);
           })
           .catch(function(error) {
             console.log(error);

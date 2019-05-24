@@ -38,7 +38,13 @@ const router = new Router({
       path: '/user-sharing',
       name: 'user-sharing',
       component: () => import('@/views/user-sharing')
+    },
+    {
+      path: '/share-page',
+      name: 'share-page',
+      component: () => import('@/views/share-page')
     }
+    
   ]
 })
 router.afterEach((to, from) => { // 跳转后，不需要 next

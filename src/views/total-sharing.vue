@@ -40,13 +40,12 @@ export default {
   },
    mounted(){
        var _that=this;
-       //localStorage.getItem("openid")
-       var openid="o0cRH0sr9U3a2mNhHHYH_GlcXdXE"
+       var openid=localStorage.getItem("openid");
         _that.$http.post(_that.$api+"/wx/event/user_event/list/", {
-            openid:openid
+            open_id:openid
           })
           .then(function(response) {
-            console.log(response)
+           _that._data.list= response.data.event[0];
           })
           .catch(function(error) {
             console.log(error);
