@@ -30,7 +30,6 @@ export default {
           })
           .then(function(response) {
             urls=encodeURIComponent(urls);
-            localStorage.setItem("wxsdk", JSON.stringify(response.data));
             let link ="https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
               response.data.appId +
               "&redirect_uri=" +

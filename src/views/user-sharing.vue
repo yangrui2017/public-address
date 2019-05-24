@@ -15,7 +15,7 @@ export default {
       operable: {},
       share:{
         links:"http://dev.upctech.com.cn/mp/index2.html?key=",
-        title:"123",
+        title:"你好我是额帮洗车",
         desc:"关注我们",
         imgUrl:"http://www.upctech.com.cn/static/picture/logo.png"
       }
@@ -26,10 +26,8 @@ export default {
   mounted() {
     var _that = this;
     _that._data.operable = JSON.parse(sessionStorage.getItem("operable"));//获取菜单并显示
-    console.log(_that._data.operable );
-    var wxsdk= JSON.parse(localStorage.getItem("wxsdk"));
-    
-    _that.wxInit(wxsdk);
+    var urls = window.location.href.split("?").toString();
+    //获取分享二维码
     _that.$http.post(_that.$api+"/wx/event/user_event/create/", {           
             "event_id":_that._data.operable.id,
             "openid": localStorage.getItem("openid")
@@ -41,26 +39,39 @@ export default {
     .catch(function(error) {
       console.log(error);
     });
+    //获取微信分享sdkconfig
+    _that.$http.post(_that.$api+"/wx/wx_js_sign", {
+            r_url: urls
+          })
+          .then(function(response) {
+          _that.wxInit(response.data);
+          })
   },
   methods: {
     //微信分享
     wxInit(res) {
+      var _that = this;
       let url = location.href.split("#")[0]; //获取锚点之前的链接
+      console.log(res)
       wx.config({
-        debug: false,
+        debug: true,
         appId: res.appId,
         timestamp: res.timestamp,
-        nonceStr: res.nonceStr,
+        nonceStr: res.noncestr,
         signature: res.signature,
         jsApiList: ["onMenuShareTimeline", "onMenuShareAppMessage"]
       });
-       console.log(this._data.share.desc)
+      // 微信分享失败
+      wx.error(function(err) {
+        alert(JSON.stringify(err));
+      });
       wx.ready(function() {
+        var datas=JSON.parse(JSON.stringify(_that._data));
         wx.onMenuShareTimeline({
-          title: this._data.share.title, // 分享标题
-          desc: this._data.share.desc, // 分享描述
-          link: this._data.share.links+ this._dataevent_scene_str, // 分享链接
-          imgUrl: this._data.share.imgUrl, // 分享图标
+          title: datas.share.title, // 分享标题
+          desc:  datas.share.desc, // 分享描述
+          link:  datas.share.links+datas.event_scene_str, // 分享链接
+          imgUrl: datas.share.imgUrl, // 分享图标
           success: function() {
                           alert("分享到朋友圈成功")
           },
@@ -70,10 +81,10 @@ export default {
         });
         //微信分享菜单测试
         wx.onMenuShareAppMessage({
-           title: this._data.share.title, // 分享标题
-          desc: this._data.share.desc, // 分享描述
-          link: this._data.share.links+ this._dataevent_scene_str, // 分享链接
-          imgUrl: this._data.share.imgUrl, // 分享图标
+          title: datas.share.title, // 分享标题
+          desc:  datas.share.desc, // 分享描述
+          link:  datas.share.links+ datas.event_scene_str, // 分享链接
+          imgUrl: datas.share.imgUrl, // 分享图标
           success: function() {
             alert("成功分享给朋友")
           },
@@ -82,10 +93,7 @@ export default {
           }
         });
       });
-      // 微信分享失败
-      wx.error(function(err) {
-        alert(JSON.stringify(err));
-      });
+      
     }
   }
 };
