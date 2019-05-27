@@ -29,9 +29,9 @@ export default {
   mounted() {
     var _that = this;
    var key= _that.getQueryString("key");
-    _that.$http.post(_that.$api+"/wx/event/user_event/create/", {           
-            "key":key,
-            "openid": localStorage.getItem("openid")
+    _that.$http.post(_that.$api+"/wx/event/user_event/result/", {           
+            "event_scene_str":key,
+            "viewer_openid": localStorage.getItem("openid")
     })
     .then(function(response) {
       console.log(response.data);

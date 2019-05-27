@@ -14,8 +14,8 @@ export default {
       qr_url: "",
       operable: {},
       share:{
-        links:"http://dev.upctech.com.cn/mp/index2.html?key=",
-        title:"你好我是额帮洗车",
+        links:"http://wx.upctech.com.cn/share-page?key=",
+        title:"你好我是E帮洗车",
         desc:"关注我们",
         imgUrl:"http://www.upctech.com.cn/static/picture/logo.png"
       }
