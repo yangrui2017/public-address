@@ -20,7 +20,7 @@ export default {
   data() {
     return {
      originator:"挑剔",
-     qrcodeurl:qrcodeurl,
+     qrcodeurl:"",
      text:"如未关注公众用户，请先关注公众号再领取"
     };
   },
@@ -34,7 +34,9 @@ export default {
             "viewer_openid": localStorage.getItem("openid")
     })
     .then(function(response) {
-      console.log(response.data);
+     _that._data.originator=response.data.current_user.nickname;
+     _that._data.qrcodeurl=response.data.event_qr.qr_url;
+     
     })
     .catch(function(error) {
       console.log(error);

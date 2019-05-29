@@ -54,7 +54,7 @@ export default {
       let url = location.href.split("#")[0]; //获取锚点之前的链接
       console.log(res)
       wx.config({
-        debug: true,
+        debug: false,
         appId: res.appId,
         timestamp: res.timestamp,
         nonceStr: res.noncestr,
