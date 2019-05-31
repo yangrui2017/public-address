@@ -10,7 +10,7 @@ export default {
   created() {},
   mounted() {
     var openid = localStorage.getItem("openid");
-    if (openid == "undefind" || openid == null) {
+      if (openid == "undefind" || openid == null) {
       var _that = this;
       var urls = window.location.href.split("?").toString();
       var code = _that.getQueryString("code");
@@ -19,15 +19,19 @@ export default {
           .get(_that.$api+"/wx/js_token?code=" + code)
           .then(function(response) {
              localStorage.setItem("openid",response.data.openid);
+           _that.$http.get(_that.$api+"/wx/user_info/?uid="+localStorage.getItem("openid"))
+              .then(function(responses) {
+                  localStorage.setItem("unionid",responses.data.unionid);
+              })
           })
           .catch(function(error) {
             console.log(error);
           });
       } else {
         //					获取code
-        _that.$http.post(_that.$api+"/wx/wx_js_sign", {
-            r_url: urls
-          })
+         let formDatas = new FormData();
+        formDatas.append( "r_url",urls);
+        _that.$http.post(_that.$api+"/wx/wx_js_sign", formDatas)
           .then(function(response) {
             urls=encodeURIComponent(urls);
             let link ="https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +

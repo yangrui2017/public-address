@@ -4,14 +4,21 @@
             <p>---------------------邀请规则---------------------</p>
             <div class="rule">{{rule}}</div>
             <div class="but">
-             <div  v-for="(item,index) in list" :key="index"  @click="operable(index)">
+             <div  v-for="(item,index) in list" :key="index"  @click="operable(index)" class="butdiv">
                  <p>{{item.name}}</p>
              </div>
+               <div  v-for="(item,index) in list2" :key="index" class="registerbox">
+                <img :src="item.url" class="imgsrc"/>
+                <p>{{item.name}} </p>
+             </div>
             </div>
+           
 	</div>
 </template>
 
 <script>
+import userimg from "@/assets/user.jpg" 
+import { setTimeout } from 'timers';
 export default {
   data () {
     return {
@@ -19,8 +26,8 @@ export default {
       text:'荐者有份',
       rule:'1.规则，是运行、运作规律所遵循的法则。规则，一般指由群众共同制定、公认或由代表人统一制定并通过的，由群体里的所有成员一起遵守的条例和章程。它存在三种形式：明规则、潜规则、元规则，无论何种规则只要违背善恶的道德必须严惩不贷以维护世间和谐；明规则是有明文规定的规则，存在需要不断完善的局',
       record:{},
-      list:[
-      ]
+      list:[],
+      list2:[]
     }
   },
   created(){
@@ -28,16 +35,35 @@ export default {
   },
    mounted(){
        var _that=this;
-       var openid=localStorage.getItem("openid");
-        _that.$http.post(_that.$api+"/wx/event/user_event/list/", {
-            open_id:openid
-          })
+        let formData = new FormData();
+        // _that.$http.get(_that.$api+"/wx/user_info/?uid="+localStorage.getItem("openid"))
+        //       .then(function(responses) {
+        //           localStorage.setItem("unionid",responses.data.unionid);
+        //       })
+        setTimeout(function(){
+            var unionid=localStorage.getItem("unionid");
+           formData.append("unionid", unionid); // 'file' 可变 相当于 input 表单的name 属性
+         _that.$http.post(_that.$api+"/wx/event/user_event/list/",formData, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
           .then(function(response) {
-           _that._data.list= response.data.event[0];
+            if(JSON.stringify(response.data.member_type) =="{}"){
+                _that._data.list2=[{
+                    name:"长按关注技师小程序",
+                    url:userimg
+                  },
+                  {
+                    name:"长按关注用户小程序",
+                    url:userimg
+                  }]
+            }else{
+            _that._data.list= response.data.event[0];
+            }
+           
           })
           .catch(function(error) {
             console.log(error);
           });
+        },1000)
+        
         
   },
   methods: {
@@ -100,7 +126,7 @@ a{text-decoration:none}
         
         margin-top:40px
     }
-    .but div{
+    .butdiv{
         display:inline-block;
         padding:10px;
         margin-left:10px;
@@ -109,5 +135,22 @@ a{text-decoration:none}
         border-radius:10px;
         line-height:30px;
         font-size:15px;
+    }
+    .registerbox{
+      float: left;
+      width: 49%
+       
+    }
+    .registerbox:nth-of-type(2){
+      float: right;
+      width: 49%
+       
+    }
+    .imgsrc{
+      width: 60%
+    }
+    .registerbox p{
+      font-size: 15px;
+      color: black
     }
 </style>

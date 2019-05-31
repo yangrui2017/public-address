@@ -1,4 +1,5 @@
 <template>
+
   <div class="box">
     <h2>{{operable.name}}</h2>
     <p>{{operable.description}}</p>
@@ -40,10 +41,11 @@ export default {
       console.log(error);
     });
     //获取微信分享sdkconfig
-    _that.$http.post(_that.$api+"/wx/wx_js_sign", {
-            r_url: urls
-          })
+        let formData = new FormData();
+      formData.append( "r_url",urls); // 'file' 可变 相当于 input 表单的name 属性
+    _that.$http.post(_that.$api+"/wx/wx_js_sign", formData)
           .then(function(response) {
+            _that._data.data1=JSON.stringify(response.data)
           _that.wxInit(response.data);
           })
   },
@@ -54,7 +56,7 @@ export default {
       let url = location.href.split("#")[0]; //获取锚点之前的链接
       console.log(res)
       wx.config({
-        debug: false,
+        debug: true,
         appId: res.appId,
         timestamp: res.timestamp,
         nonceStr: res.noncestr,
@@ -102,8 +104,8 @@ export default {
 <style scoped>
 .box {
   width: 100%;
-  height: 100%;
-  background: url(../assets/fuwu.png);
+        height: 100%;
+   background: url(../assets/fuwu.png); 
   background-size: 100% 100%;
   position: relative;
   overflow: hidden;

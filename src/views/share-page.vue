@@ -31,9 +31,11 @@ export default {
    var key= _that.getQueryString("key");
     _that.$http.post(_that.$api+"/wx/event/user_event/result/", {           
             "event_scene_str":key,
-            "viewer_openid": localStorage.getItem("openid")
+            "viewer_openid": localStorage.getItem("openid"),
+            "viewer_unionid": localStorage.getItem("unionid")
     })
     .then(function(response) {
+      console.log(response.data.current_user.nickname)
      _that._data.originator=response.data.current_user.nickname;
      _that._data.qrcodeurl=response.data.event_qr.qr_url;
      
