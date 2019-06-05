@@ -36,10 +36,6 @@ export default {
    mounted(){
        var _that=this;
         let formData = new FormData();
-        // _that.$http.get(_that.$api+"/wx/user_info/?uid="+localStorage.getItem("openid"))
-        //       .then(function(responses) {
-        //           localStorage.setItem("unionid",responses.data.unionid);
-        //       })
         setTimeout(function(){
             var unionid=localStorage.getItem("unionid");
            formData.append("unionid", unionid); // 'file' 可变 相当于 input 表单的name 属性

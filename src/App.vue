@@ -5,11 +5,11 @@
 </template>
 
 <script>
+import { setTimeout } from 'timers';
 export default {
   name: "App",
-  created() {},
-  mounted() {
-    var openid = localStorage.getItem("openid");
+  created() {
+var openid = localStorage.getItem("openid");
       if (openid == "undefind" || openid == null) {
       var _that = this;
       var urls = window.location.href.split("?").toString();
@@ -19,10 +19,11 @@ export default {
           .get(_that.$api+"/wx/js_token?code=" + code)
           .then(function(response) {
              localStorage.setItem("openid",response.data.openid);
-           _that.$http.get(_that.$api+"/wx/user_info/?uid="+localStorage.getItem("openid"))
+                 _that.$http.get(_that.$api+"/wx/user_info/?uid="+localStorage.getItem("openid"))
               .then(function(responses) {
                   localStorage.setItem("unionid",responses.data.unionid);
               })
+           
           })
           .catch(function(error) {
             console.log(error);
@@ -30,9 +31,10 @@ export default {
       } else {
         //					获取code
          let formDatas = new FormData();
-        formDatas.append( "r_url",urls);
+        formDatas.append( "r_url",urls+"/user-sharing");
         _that.$http.post(_that.$api+"/wx/wx_js_sign", formDatas)
           .then(function(response) {
+            
             urls=encodeURIComponent(urls);
             let link ="https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
               response.data.appId +
@@ -46,6 +48,9 @@ export default {
           });
       }
     }
+  },
+  mounted() {
+   
   },
   methods: {
     getQueryString(name) {

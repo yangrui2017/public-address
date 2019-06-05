@@ -22,7 +22,7 @@ export default {
      originator:"挑剔",
      qrcodeurl:"",
      text:"如未关注公众用户，请先关注公众号再领取"
-    }; 
+    };
   },
   created() {
   },

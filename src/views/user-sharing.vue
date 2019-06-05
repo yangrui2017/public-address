@@ -1,6 +1,7 @@
 <template>
 
   <div class="box">
+    {{data1}}
     <h2>{{operable.name}}</h2>
     <p>{{operable.description}}</p>
     <img :src="qr_url" class="imgurl"/>
@@ -11,6 +12,7 @@
 export default {
   data() {
     return {
+      data1:"",
       event_scene_str:"",
       qr_url: "",
       operable: {},
@@ -40,13 +42,18 @@ export default {
     .catch(function(error) {
       console.log(error);
     });
-    //获取微信分享sdkconfig
+    //获取微信分享sdkconfi
         let formData = new FormData();
       formData.append( "r_url",urls); // 'file' 可变 相当于 input 表单的name 属性
     _that.$http.post(_that.$api+"/wx/wx_js_sign", formData)
           .then(function(response) {
-            _that._data.data1=JSON.stringify(response.data)
+            if(JSON.stringify(response.data) =="{}"){
+              alert("没有获取到jsdk")
+            }else{
+              _that._data.data1=JSON.stringify(response.data) ;
           _that.wxInit(response.data);
+          
+            }
           })
   },
   methods: {
@@ -56,7 +63,7 @@ export default {
       let url = location.href.split("#")[0]; //获取锚点之前的链接
       console.log(res)
       wx.config({
-        debug: true,
+        debug: false,
         appId: res.appId,
         timestamp: res.timestamp,
         nonceStr: res.noncestr,
