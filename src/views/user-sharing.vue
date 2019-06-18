@@ -1,7 +1,6 @@
 <template>
 
   <div class="box">
-    {{data1}}
     <h2>{{operable.name}}</h2>
     <p>{{operable.description}}</p>
     <img :src="qr_url" class="imgurl"/>
@@ -9,13 +8,14 @@
 </template>
 
 <script>
+import { setTimeout } from 'timers';
 export default {
   data() {
     return {
-      data1:"",
       event_scene_str:"",
       qr_url: "",
-      operable: {},
+      operable: {
+      },
       share:{
         links:"http://wx.upctech.com.cn/share-page?key=",
         title:"你好我是E帮洗车",
@@ -27,9 +27,10 @@ export default {
   created() {
   },
   mounted() {
+    var urls= window.location.href.split("?")[0];
     var _that = this;
     _that._data.operable = JSON.parse(sessionStorage.getItem("operable"));//获取菜单并显示
-    var urls = window.location.href.split("?").toString();
+   
     //获取分享二维码
     _that.$http.post(_that.$api+"/wx/event/user_event/create/", {           
             "event_id":_that._data.operable.id,
@@ -42,7 +43,7 @@ export default {
     .catch(function(error) {
       console.log(error);
     });
-    //获取微信分享sdkconfi
+    //获取微信分享sdkconfig
         let formData = new FormData();
       formData.append( "r_url",urls); // 'file' 可变 相当于 input 表单的name 属性
     _that.$http.post(_that.$api+"/wx/wx_js_sign", formData)
@@ -51,7 +52,8 @@ export default {
               alert("没有获取到jsdk")
             }else{
               _that._data.data1=JSON.stringify(response.data) ;
-          _that.wxInit(response.data);
+                  _that.wxInit(response.data);
+          
           
             }
           })
@@ -60,7 +62,6 @@ export default {
     //微信分享
     wxInit(res) {
       var _that = this;
-      let url = location.href.split("#")[0]; //获取锚点之前的链接
       console.log(res)
       wx.config({
         debug: false,

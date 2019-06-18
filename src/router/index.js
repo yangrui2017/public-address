@@ -43,6 +43,11 @@ const router = new Router({
       path: '/share-page',
       name: 'share-page',
       component: () => import('@/views/share-page')
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: () => import('@/views/test')
     }
     
   ]

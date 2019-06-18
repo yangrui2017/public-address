@@ -4,8 +4,8 @@
             <p>---------------------邀请规则---------------------</p>
             <div class="rule">{{rule}}</div>
             <div class="but">
-             <div  v-for="(item,index) in list" :key="index"  @click="operable(index)" class="butdiv">
-                 <p>{{item.name}}</p>
+             <div v-for="(item,index) in list" :key="index"  @click="operable(index)" class="butdiv">
+                 <p>{{item.description}}</p>
              </div>
                <div  v-for="(item,index) in list2" :key="index" class="registerbox">
                 <img :src="item.url" class="imgsrc"/>
@@ -51,7 +51,14 @@ export default {
                     url:userimg
                   }]
             }else{
-            _that._data.list= response.data.event[0];
+            
+               response.data.event.forEach((item,index,arr)=> {
+                 for(var a=0;a<item.length;a++){
+                       
+                     _that._data.list.push(item[a])
+                     
+                 }
+          })
             }
            
           })
@@ -59,7 +66,6 @@ export default {
             console.log(error);
           });
         },1000)
-        
         
   },
   methods: {
@@ -72,7 +78,7 @@ export default {
       },
       operable(index){
             sessionStorage.setItem("operable", JSON.stringify(this.list[index]));//保存当前点击菜单
-            this.$router.push({path:'/user-sharing'});
+            window.location.href="http://wx.upctech.com.cn/user-sharing";
       }
   }
 }

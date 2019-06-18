@@ -23,7 +23,6 @@ var openid = localStorage.getItem("openid");
               .then(function(responses) {
                   localStorage.setItem("unionid",responses.data.unionid);
               })
-           
           })
           .catch(function(error) {
             console.log(error);
@@ -31,10 +30,9 @@ var openid = localStorage.getItem("openid");
       } else {
         //					获取code
          let formDatas = new FormData();
-        formDatas.append( "r_url",urls+"/user-sharing");
+        formDatas.append( "r_url",urls);
         _that.$http.post(_that.$api+"/wx/wx_js_sign", formDatas)
           .then(function(response) {
-            
             urls=encodeURIComponent(urls);
             let link ="https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
               response.data.appId +
