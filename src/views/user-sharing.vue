@@ -4,6 +4,7 @@
     <h2>{{operable.name}}</h2>
     <p>{{operable.description}}</p>
     <img :src="qr_url" class="imgurl"/>
+    <p>通过分享您可获得{{points}}</p>
   </div>
 </template>
 
@@ -12,6 +13,7 @@ import { setTimeout } from 'timers';
 export default {
   data() {
     return {
+      points:"",
       event_scene_str:"",
       qr_url: "",
       operable: {
@@ -37,6 +39,7 @@ export default {
             "openid": localStorage.getItem("openid")
     })
     .then(function(response) {
+         _that._data.points=response.data.event_info.points+"积分";
       _that._data.event_scene_str=response.data.event_scene_str;
        _that._data.qr_url=response.data.event_qr.qr_url;
     })

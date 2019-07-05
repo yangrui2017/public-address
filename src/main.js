@@ -8,6 +8,9 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
+import Vant from 'vant';
+import 'vant/lib/index.css';
+Vue.use(Vant);
 
 axios.defaults.baseURL = '/api'
 axios.defaults.headers.post['Content-Type'] = 'application/json';

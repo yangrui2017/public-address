@@ -83,11 +83,12 @@ export default {
         if(_that._data.butreceives){
         _that.$http.post(_that.$api+"/wx/event/allocate_pc/result/",arr)
             .then(function(response) {
-              if(response.data.point_res.errcode=="-50104"){
-                  alert(response.data.point_res.errmsg)
-              }else{
+              if(response.data.point_res[0].errcode=="0"){
                 alert("添加成功");
                 _that._data.butreceives=false;
+                 
+              }else{
+                 alert(response.data.point_res.errmsg)
               }
             
             })

@@ -15,7 +15,7 @@ const router = new Router({
       component: () => import('@/views/car-wash')
     },
     {
-      path: '/company-profile',
+      path: '/company',
       name: 'company-profile',
       component: () => import('@/views/company-profile')
     },
@@ -43,13 +43,7 @@ const router = new Router({
       path: '/share-page',
       name: 'share-page',
       component: () => import('@/views/share-page')
-    },
-    {
-      path: '/test',
-      name: 'test',
-      component: () => import('@/views/test')
     }
-    
   ]
 })
 router.afterEach((to, from) => { // 跳转后，不需要 next

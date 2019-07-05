@@ -1,11 +1,12 @@
 <template>
   <div class="box">
 			<h2 id="text1">{{name}}<br>{{text}}</h2>
-            <p>---------------------邀请规则---------------------</p>
+            <p>---------------------邀请步骤---------------------</p>
             <div class="rule">{{rule}}</div>
             <div class="but">
+            
              <div v-for="(item,index) in list" :key="index"  @click="operable(index)" class="butdiv">
-                 <p>{{item.description}}</p>
+                 <van-button type="danger">{{item.description}}</van-button>
              </div>
                <div  v-for="(item,index) in list2" :key="index" class="registerbox">
                 <img :src="item.url" class="imgsrc"/>
@@ -89,10 +90,10 @@ a{text-decoration:none}
     .box {
         width: 100%;
         height: 100%;
-        background: url(../assets/fuwu.png);
+        overflow: scroll;
+        background: url(../assets/292787.png);
         background-size: 100% 100%;
         position: relative;
-        overflow: hidden;
     }
     
     h2 {
@@ -133,7 +134,6 @@ a{text-decoration:none}
         padding:10px;
         margin-left:10px;
         text-align:center;
-        background:#00c2ff;
         border-radius:10px;
         line-height:30px;
         font-size:15px;
