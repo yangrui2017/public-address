@@ -23,7 +23,7 @@ import { setTimeout } from 'timers';
 export default {
   data () {
     return {
-      name:'邀友有礼',
+      name:'技师分享',
       text:'荐者有份',
       rule:'1.规则，是运行、运作规律所遵循的法则。规则，一般指由群众共同制定、公认或由代表人统一制定并通过的，由群体里的所有成员一起遵守的条例和章程。它存在三种形式：明规则、潜规则、元规则，无论何种规则只要违背善恶的道德必须严惩不贷以维护世间和谐；明规则是有明文规定的规则，存在需要不断完善的局',
       record:{},
@@ -42,24 +42,16 @@ export default {
            formData.append("unionid", unionid); // 'file' 可变 相当于 input 表单的name 属性
          _that.$http.post(_that.$api+"/wx/event/user_event/list/",formData, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
           .then(function(response) {
-            if(JSON.stringify(response.data.member_type) =="{}"){
+            if(JSON.stringify(response.data.WorkerMini) ==false){
                 _that._data.list2=[{
                     name:"长按关注技师小程序",
                     url:userimg
-                  },
-                  {
-                    name:"长按关注用户小程序",
-                    url:userimg
                   }]
             }else{
+            for(var i=0;i<response.data.event[1].length;i++){
+                _that._data.list.push(response.data.event[1][i])
+            }
             
-               response.data.event.forEach((item,index,arr)=> {
-                 for(var a=0;a<item.length;a++){
-                       
-                     _that._data.list.push(item[a])
-                     
-                 }
-          })
             }
            
           })
@@ -79,7 +71,7 @@ export default {
       },
       operable(index){
             sessionStorage.setItem("operable", JSON.stringify(this.list[index]));//保存当前点击菜单
-            window.location.href="http://wx.upctech.com.cn/user-sharing";
+            window.location.href="http://wx.upctech.com.cn/share-details";
       }
   }
 }
@@ -139,8 +131,8 @@ a{text-decoration:none}
         font-size:15px;
     }
     .registerbox{
-      float: left;
-      width: 49%
+      width: 50%;
+      margin-left: 25%;
        
     }
     .registerbox:nth-of-type(2){

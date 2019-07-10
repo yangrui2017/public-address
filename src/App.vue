@@ -39,7 +39,7 @@ var openid = localStorage.getItem("openid");
               "&redirect_uri=" +
               urls +
               "&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect";
-             window.location.replace(link);
+             //window.location.replace(link);
           })
           .catch(function(error) {
             console.log(error);

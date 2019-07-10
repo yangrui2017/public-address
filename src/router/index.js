@@ -10,6 +10,11 @@ const router = new Router({
       component: () => import('@/views/total-sharing')
     },
     {
+      path: '/user-sharing',
+      name: 'user-sharing',
+      component: () => import('@/views/user-sharing')
+    },
+    {
       path: '/car-wash',
       name: 'car-wash',
       component: () => import('@/views/car-wash')
@@ -24,20 +29,16 @@ const router = new Router({
       name: 'tech-recruitment',
       component: () => import('@/views/tech-recruitment')
     },
-    {
-      path: '/tech-promotion',
-      name: 'tech-promotion',
-      component: () => import('@/views/tech-promotion')
-    },
+   
     {
       path: '/my',
       name: 'my',
       component: () => import('@/views/my')
     },
     {
-      path: '/user-sharing',
-      name: 'user-sharing',
-      component: () => import('@/views/user-sharing')
+      path: '/share-details',
+      name: 'share-details',
+      component: () => import('@/views/share-details')
     },
     {
       path: '/share-page',

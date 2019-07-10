@@ -10,6 +10,9 @@ Vue.config.productionTip = false
 Vue.prototype.$http = axios
 import Vant from 'vant';
 import 'vant/lib/index.css';
+import VueAwesomeSwiper from 'vue-awesome-swiper';
+import 'swiper/dist/css/swiper.css';
+Vue.use(VueAwesomeSwiper);
 Vue.use(Vant);
 
 axios.defaults.baseURL = '/api'

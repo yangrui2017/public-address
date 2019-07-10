@@ -1,137 +1,150 @@
 <template>
-
   <div class="box">
-    <h2>{{operable.name}}</h2>
-    <p>{{operable.description}}</p>
-    <img :src="qr_url" class="imgurl"/>
-    <p>通过分享您可获得{{points}}</p>
-  </div>
+			<h2 id="text1">{{name}}<br>{{text}}</h2>
+            <p>---------------------邀请步骤---------------------</p>
+            <div class="rule">{{rule}}</div>
+            <div class="but">
+            
+             <div v-for="(item,index) in list" :key="index"  @click="operable(index)" class="butdiv">
+                 <van-button type="danger">{{item.description}}</van-button>
+             </div>
+               <div  v-for="(item,index) in list2" :key="index" class="registerbox">
+                <img :src="item.url" class="imgsrc"/>
+                <p>{{item.name}} </p>
+             </div>
+            </div>
+           
+	</div>
 </template>
 
 <script>
+import userimg from "@/assets/user.jpg" 
 import { setTimeout } from 'timers';
 export default {
-  data() {
+  data () {
     return {
-      points:"",
-      event_scene_str:"",
-      qr_url: "",
-      operable: {
-      },
-      share:{
-        links:"http://wx.upctech.com.cn/share-page?key=",
-        title:"你好我是E帮洗车",
-        desc:"关注我们",
-        imgUrl:"http://www.upctech.com.cn/static/picture/logo.png"
-      }
-    };
+      name:'用户分享',
+      text:'荐者有份',
+      rule:'1.规则，是运行、运作规律所遵循的法则。规则，一般指由群众共同制定、公认或由代表人统一制定并通过的，由群体里的所有成员一起遵守的条例和章程。它存在三种形式：明规则、潜规则、元规则，无论何种规则只要违背善恶的道德必须严惩不贷以维护世间和谐；明规则是有明文规定的规则，存在需要不断完善的局',
+      record:{},
+      list:[],
+      list2:[]
+    }
   },
-  created() {
+  created(){
+    
   },
-  mounted() {
-    var urls= window.location.href.split("?")[0];
-    var _that = this;
-    _that._data.operable = JSON.parse(sessionStorage.getItem("operable"));//获取菜单并显示
-   
-    //获取分享二维码
-    _that.$http.post(_that.$api+"/wx/event/user_event/create/", {           
-            "event_id":_that._data.operable.id,
-            "openid": localStorage.getItem("openid")
-    })
-    .then(function(response) {
-         _that._data.points=response.data.event_info.points+"积分";
-      _that._data.event_scene_str=response.data.event_scene_str;
-       _that._data.qr_url=response.data.event_qr.qr_url;
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
-    //获取微信分享sdkconfig
+   mounted(){
+       var _that=this;
         let formData = new FormData();
-      formData.append( "r_url",urls); // 'file' 可变 相当于 input 表单的name 属性
-    _that.$http.post(_that.$api+"/wx/wx_js_sign", formData)
+        setTimeout(function(){
+            var unionid=localStorage.getItem("unionid");
+           formData.append("unionid", unionid); // 'file' 可变 相当于 input 表单的name 属性
+         _that.$http.post(_that.$api+"/wx/event/user_event/list/",formData, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
           .then(function(response) {
-            if(JSON.stringify(response.data) =="{}"){
-              alert("没有获取到jsdk")
+            if(JSON.stringify(response.data.WorkerMini) ==false){
+                _that._data.list2=[{
+                    name:"长按关注用户小程序",
+                    url:userimg
+                  }]
             }else{
-              _that._data.data1=JSON.stringify(response.data) ;
-                  _that.wxInit(response.data);
-          
-          
+            for(var i=0;i<response.data.event[0].length;i++){
+                _that._data.list.push(response.data.event[0][i])
             }
+            
+            }
+           
           })
+          .catch(function(error) {
+            console.log(error);
+          });
+        },1000)
+        
   },
   methods: {
-    //微信分享
-    wxInit(res) {
-      var _that = this;
-      console.log(res)
-      wx.config({
-        debug: false,
-        appId: res.appId,
-        timestamp: res.timestamp,
-        nonceStr: res.noncestr,
-        signature: res.signature,
-        jsApiList: ["onMenuShareTimeline", "onMenuShareAppMessage"]
-      });
-      // 微信分享失败
-      wx.error(function(err) {
-        alert(JSON.stringify(err));
-      });
-      wx.ready(function() {
-        var datas=JSON.parse(JSON.stringify(_that._data));
-        wx.onMenuShareTimeline({
-          title: datas.share.title, // 分享标题
-          desc:  datas.share.desc, // 分享描述
-          link:  datas.share.links+datas.event_scene_str, // 分享链接
-          imgUrl: datas.share.imgUrl, // 分享图标
-          success: function() {
-                          alert("分享到朋友圈成功")
-          },
-          cancel: function() {
-                          alert("分享失败,您取消了分享!")
-          }
-        });
-        //微信分享菜单测试
-        wx.onMenuShareAppMessage({
-          title: datas.share.title, // 分享标题
-          desc:  datas.share.desc, // 分享描述
-          link:  datas.share.links+ datas.event_scene_str, // 分享链接
-          imgUrl: datas.share.imgUrl, // 分享图标
-          success: function() {
-            alert("成功分享给朋友")
-          },
-          cancel: function() {
-            alert("分享失败,您取消了分享!")
-          }
-        });
-      });
-      
-    }
+      getQueryString(name){
+			     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+			     var r = window.location.search.substr(1).match(reg);
+			     if(r!=null)
+			        return  unescape(r[2]);
+			      return null;
+      },
+      operable(index){
+            sessionStorage.setItem("operable", JSON.stringify(this.list[index]));//保存当前点击菜单
+            window.location.href="http://wx.upctech.com.cn/share-details";
+      }
   }
-};
+}
+
 </script>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.box {
-  width: 100%;
+a{text-decoration:none}
+    .box {
+        width: 100%;
         height: 100%;
-   background: url(../assets/fuwu.png); 
-  background-size: 100% 100%;
-  position: relative;
-  overflow: hidden;
-}
-
-h2 {
-  text-align: center;
-}
-
-p {
-  width: 90%;
-  margin-left: 5%;
-  margin-bottom: 10px;
-}
-.imgurl{
-  width:50%;
-}
+        overflow: scroll;
+        background: url(../assets/292787.png);
+        background-size: 100% 100%;
+        position: relative;
+    }
+    
+    h2 {
+        margin-top:50px;
+        text-align:center;
+        font-size:30px;
+        color:#FFFFFF; 
+        text-shadow: 0 4px 0 #ccc,  0 2px 0 #c9c9c9,  0 3px 0 #bbb, 
+        0 4px 0 #b9b9b9,  0 5px 0 #aaa,  0 6px 1px rgba(0,0,0,.1), 
+        0 0 5px rgba(0,0,0,.1),   0 1px 3px rgba(0,0,0,.3), 
+        0 3px 5px rgba(0,0,0,.2), 
+        0 5px 10px rgba(0,0,0,.25), 
+        0 10px 10px rgba(0,0,0,.2), 
+        0 20px 20px rgba(0,0,0,.15); 
+    }
+    p {
+        width:90%;
+        margin-left:5%;
+        margin-bottom: 10px;
+    }
+    .rule{
+        font-size:15px;
+         width:86%;
+         margin-bottom: 10px;
+         border-radius:5px;
+         background:#e06319;
+         padding:3%;
+         margin-left:4%;
+         text-align:left;
+         color:white
+    }
+    .but{
+        
+        margin-top:40px
+    }
+    .butdiv{
+        display:inline-block;
+        padding:10px;
+        margin-left:10px;
+        text-align:center;
+        border-radius:10px;
+        line-height:30px;
+        font-size:15px;
+    }
+    .registerbox{
+      width: 50%;
+      margin-left: 25%;
+       
+    }
+    .registerbox:nth-of-type(2){
+      float: right;
+      width: 49%
+       
+    }
+    .imgsrc{
+      width: 60%
+    }
+    .registerbox p{
+      font-size: 15px;
+      color: black
+    }
 </style>
