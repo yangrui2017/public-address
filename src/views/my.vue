@@ -34,10 +34,7 @@ export default {
     _that._data.headerimg=JSON.parse(localStorage.getItem("userinfo")).headimgurl;
      _that._data.nickname=JSON.parse(localStorage.getItem("userinfo")).nickname;
     var unionid=JSON.parse(localStorage.getItem("userinfo")).unionid;
-
-    _that.$http.post(_that.$api+"/wx/event/wx_share/log/", {      
-            "unionid":unionid
-    })
+  _that.$http.get(_that.$api+"/wx/event/wx_share/log/?unionid="+unionid)
     .then(function(response) {
       _that._data.sharenumber=response.data.count
     })
@@ -46,7 +43,6 @@ export default {
     });
   },
     methods: {
-      
       tableRowClassName({row, rowIndex}) {
         if( parseInt(row.id)%2 ==0 ){
           return 'warning-row';
