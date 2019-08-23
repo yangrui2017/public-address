@@ -1,28 +1,19 @@
 <template>
   <div class="box">
-     <el-header  class="header">您一共分享{{sharenumber}}次</el-header>
-    <el-table
-    :data="tableData"
-     :row-class-name="tableRowClassName"
-    border
-    style="width: 100%;font-size: 10px">
-    <el-table-column
-      prop="created_on"
-      label="分享时间">
-    </el-table-column>
-    <el-table-column
-      prop="name"
-      label="活动名称">
-    </el-table-column>
-    <el-table-column
-      prop="user"
-      label="被分享人">
-    </el-table-column>
-     <el-table-column
-      prop="reward"
-      label="获得奖励">
-    </el-table-column>
-  </el-table>     
+    <header>
+        <img :src="headerimg"   class="headerimg"/>
+        <el-header  class="header">尊敬的{{nickname}}:您一共分享{{sharenumber}}次</el-header>
+    </header>
+    <div  class="list">
+      <div class="listbox">
+      <p>分享给***</p>
+      <p>2019-08-19</p>
+      </div>
+     <div class="listbox fonts">获得20积分</div>
+       <el-divider></el-divider>
+    </div>
+    <div class="footer">----------------显示所有记录----------------</div>
+   
   </div>
 </template>
 
@@ -31,43 +22,21 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      sharenumber:"20",
-      tableData: [ {
-          id:"1",
-          created_on:"2019-06-10 06:19:21",
-          name:"由技师分享用户",
-          user:"挑剔",
-          reward:"+20积分"
-
-        }, {
-            id:"2",
-          created_on:"2019-06-10 06:19:21",
-          name:"由技师分享用户",
-          user:"挑剔",
-          reward:"+20积分"
-
-        }, {
-           id:"3",
-          created_on:"2019-06-10 06:19:21",
-          name:"由技师分享用户",
-          user:"挑剔",
-          reward:"+20积分"
-
-        },
-         {
-            id:"4",
-          created_on:"2019-06-10 06:19:21",
-          name:"由技师分享用户",
-          user:"挑剔",
-          reward:"+20积分"
-
-        }]
+      nickname:"",
+      headerimg:"",
+      sharenumber:"20"
+      
     }
   },
    mounted() {
     var _that = this;
-    _that.$http.get(_that.$api+"/wx/event/wx_share/log/", {      
-            "unionid": localStorage.getItem("unionid")
+
+    _that._data.headerimg=JSON.parse(localStorage.getItem("userinfo")).headimgurl;
+     _that._data.nickname=JSON.parse(localStorage.getItem("userinfo")).nickname;
+    var unionid=JSON.parse(localStorage.getItem("userinfo")).unionid;
+
+    _that.$http.post(_that.$api+"/wx/event/wx_share/log/", {      
+            "unionid":unionid
     })
     .then(function(response) {
       _that._data.sharenumber=response.data.count
@@ -90,24 +59,57 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.header{
-  margin: 0;line-height: 60px;
-}
-.el-table tr{
-  background: none
-}
 .box{
   width: 100%;
-  height: 100%;
-  background: url(../assets/true.jpg);
-  background-size: 100% 100%;
-  color: white
-  }
-  .warning-row {
-    background: red;
-  }
+    height: 100%;
+}
+header{
+  width: 100%;
+  background: #25034d;
+}
+.header{
+  color: white;
+  line-height: 40px
+}
+.headerimg{
+  width: 25%;
+  margin-top: 40px;
+  border-radius: 50%;
 
- .success-row {
-    background: black;
-  }
+}
+.list{
+    width: 100%;
+    height: 60px;
+    overflow: initial
+}
+.listbox{
+  width: 50%;
+  float: left;
+  height: 100%;
+  font-size: 15px;
+  line-height: 30px;
+  color: black;
+}
+.listbox p{
+  margin: 0
+}
+.fonts{
+  font-size: 20px;
+  font-weight: bold;
+  color: red;
+   line-height: 60px;
+
+}
+.el-divider{
+  float: left;
+  margin: 0
+}
+.footer{
+  margin-top: 20px;
+ font-size: 12px;
+  color: #7d7e80;
+   line-height:30px;
+   text-align: center
+}
+
 </style>

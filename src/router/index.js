@@ -3,14 +3,10 @@ import Router from 'vue-router'
 Vue.use(Router)
 const router = new Router({
   mode:"history",
-  base:"/",
-  routes: [{
-      path: '/',
-      name: 'total-sharing',
-      component: () => import('@/views/total-sharing')
-    },
+  base:"/member/",
+  routes: [
     {
-      path: '/user-sharing',
+      path: '/',
       name: 'user-sharing',
       component: () => import('@/views/user-sharing')
     },
@@ -29,7 +25,6 @@ const router = new Router({
       name: 'tech-recruitment',
       component: () => import('@/views/tech-recruitment')
     },
-   
     {
       path: '/my',
       name: 'my',
@@ -49,7 +44,7 @@ const router = new Router({
 })
 router.afterEach((to, from) => { // 跳转后，不需要 next
 //路由每次走
-
+    
 })
 
 
