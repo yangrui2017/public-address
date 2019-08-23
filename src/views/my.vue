@@ -46,6 +46,7 @@ export default {
     });
   },
     methods: {
+      
       tableRowClassName({row, rowIndex}) {
         if( parseInt(row.id)%2 ==0 ){
           return 'warning-row';
