@@ -11,19 +11,19 @@ const router = new Router({
       component: () => import('@/views/user-sharing')
     },
     {
-      path: '/car-wash',
-      name: 'car-wash',
-      component: () => import('@/views/car-wash')
+      path: '/shopping-mall',
+      name: 'shopping-mall',
+      component: () => import('@/views/shopping-mall')
     },
     {
-      path: '/company',
-      name: 'company-profile',
-      component: () => import('@/views/company-profile')
+      path: '/user-list',
+      name: 'user-list',
+      component: () => import('@/views/user-list')
     },
     {
-      path: '/tech-recruitment',
-      name: 'tech-recruitment',
-      component: () => import('@/views/tech-recruitment')
+      path: '/user-content',
+      name: 'user-content',
+      component: () => import('@/views/user-content')
     },
     {
       path: '/my',
@@ -39,7 +39,18 @@ const router = new Router({
       path: '/share-page',
       name: 'share-page',
       component: () => import('@/views/share-page')
+    },
+    {
+      path: '/wash-service',
+      name: 'wash-service',
+      component: () => import('@/views/wash-service')
+    },
+    {
+      path: '/member-welcome',
+      name: 'member-welcome',
+      component: () => import('@/views/member-welcome')
     }
+    
   ]
 })
 router.afterEach((to, from) => { // 跳转后，不需要 next

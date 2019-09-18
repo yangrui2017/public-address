@@ -1,15 +1,20 @@
 <template>
   <div class="box">
-    <header>
-        <img :src="headerimg"   class="headerimg"/>
-        <el-header  class="header">尊敬的{{nickname}}:您一共分享{{sharenumber}}次</el-header>
-    </header>
-    <div  class="list">
+   <header>
+     <div class="usertext">
+      <img :src="headerimg" class="headerimg" />
+			<div class="header">{{nickname}}</div>
+     </div>
+			
+      <div class="userpoints">当前积分：{{points}}</div>
+		</header>
+   
+    <div  class="list" v-for="(item,index) in list" :key="index" >
       <div class="listbox">
-      <p>分享给***</p>
-      <p>2019-08-19</p>
+      <p>分享给{{item.viewer_name}}</p>
+      <p>{{item.modified_on}}</p>
       </div>
-     <div class="listbox fonts">获得20积分</div>
+     <div class="listbox fonts">获得{{item.usr_points}}积分</div>
        <el-divider></el-divider>
     </div>
     <div class="footer">----------------显示所有记录----------------</div>
@@ -18,38 +23,40 @@
 </template>
 
 <script>
+
 export default {
-  name: 'HelloWorld',
   data () {
     return {
       nickname:"",
       headerimg:"",
-      sharenumber:"20"
+      sharenumber:"20",
+      list:[],
+      points:""
       
     }
   },
    mounted() {
     var _that = this;
-
     _that._data.headerimg=JSON.parse(localStorage.getItem("userinfo")).headimgurl;
      _that._data.nickname=JSON.parse(localStorage.getItem("userinfo")).nickname;
-    var unionid=JSON.parse(localStorage.getItem("userinfo")).unionid;
-  _that.$http.get(_that.$api+"/wx/event/wx_share/log/?unionid="+unionid)
+    var openid=localStorage.getItem("openid");
+    console.log(openid)
+  _that.$http.get(_that.$api+"/wx/event/user_event/result_by_openid/?openid="+openid)
     .then(function(response) {
-      _that._data.sharenumber=response.data.count
+      _that._data.list=response.data.user_event_result;
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+    _that.$http.get(_that.$api+"/wx/event/user_event/global_point/?openid="+openid)
+    .then(function(response) {
+       _that._data.points=response.data.points;
     })
     .catch(function(error) {
       console.log(error);
     });
   },
     methods: {
-      tableRowClassName({row, rowIndex}) {
-        if( parseInt(row.id)%2 ==0 ){
-          return 'warning-row';
-        }else{
-         return 'success-row';
-        }
-      }
     }
 }
 </script>
@@ -60,20 +67,26 @@ export default {
   width: 100%;
     height: 100%;
 }
-header{
-  width: 100%;
-  background: #25034d;
-}
-.header{
-  color: white;
-  line-height: 40px
-}
-.headerimg{
-  width: 25%;
-  margin-top: 40px;
-  border-radius: 50%;
-
-}
+	header {
+		width: 100%;
+		background: #25034d;
+		height: 150px;
+	}
+	
+	.header {
+		float: left;
+		color: white;
+		line-height: 150px;
+		text-indent: 2em
+	}
+	
+	.headerimg {
+		margin-left: 20px;
+		width: 20%;
+		float: left;
+		margin-top: 40px;
+		border-radius: 50%;
+	}
 .list{
     width: 100%;
     height: 60px;
@@ -108,5 +121,15 @@ header{
    line-height:30px;
    text-align: center
 }
-
+.usertext{
+  height: 80%;
+  overflow: hidden;
+}
+.userpoints{
+  height: 20%;
+  text-align: left;
+  color: white;
+  line-height: 30px;
+		margin-left: 20px;
+}
 </style>

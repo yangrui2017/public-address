@@ -1,25 +1,31 @@
 <template>
     <div>
-        <transition name="fade">
+       <div class="company">
+                        <img src="../assets/logo.png"/>
+                        <span>上海联产电子科技有限公司</span>
+            </div>
+        <transition name="fade" class="content">
+           
             <swiper id="swiperBox" v-bind:options="swiperOption" ref="mySwiper">
                 <!-- 第一页 -->
                 <swiper-slide class="swiper-slide1">
-                    <div class="page">
-                        <h3>第一页</h3>
-                    </div>
+                     <img src="../assets/fuwu.jpg" class="gongsi"/>
+                      <h3>洗车优点</h3>
+                      <p>1、不损伤车辆漆面。长期使用该方法，相反能起到对车辆的养护作用。</p>
+                      <p>2、操作清洗不使用一滴水，可节约大量水资源。</p>
+                      <p>3、不污染环境，无任何废水废气排放。</p>
+                      <p>4、方便易行，可上门服务。无需车辆开到洗车点，易受车主欢迎</p>			
                 </swiper-slide>
                 <!-- 第二页 -->
                 <swiper-slide class="swiper-slide2">
-                    <div class="page">
-                        <h3>第二页</h3>
-                    </div>
+                     <img src="../assets/wushui.png" class="gongsi"/>
+                      <h3>洗车产品</h3>
+                      <p>服务产品:活性剂 抗静电剂 泥巴软化剂 颗粒悬浮剂 包裹剂 光亮因子等原材料组成。</p>
+                      <p>产品特点:本产品采用先进配方和工艺配制,在清洁车身同时打蜡 上光 镀膜一次完成,超强的光亮因子,细腻的平滑性,均匀剔透的保护膜抗击紫外线,强劲的驱水镀膜保护整台爱车,使整台车子表面光亮如镜子般剔透.不易粘土 灰尘 污垢 减小风阻,降低油耗,大大延长车漆使用寿命。</p>
+                      <p>使用方法:将产品以雾状均匀喷洒于毛巾表面擦拭车身,再用专用纳米毛巾轻轻打磨,马上可以将车漆表面擦成均匀透亮.一擦一抹轻松完成,本产品是一种最为轻松方便适合任何车漆颜色.</p>
                 </swiper-slide>
-                <!-- 第三页 -->
-                <swiper-slide class="swiper-slide3">
-                    <div class="page">
-                        <h3>第三页</h3>
-                    </div>
-                </swiper-slide>
+             
+                
                <div class="swiper-pagination"  slot="pagination"></div>
             </swiper>
         </transition>
@@ -84,6 +90,27 @@
     }
 </script>
 <style scoped>
+.company{
+    height: 50px;
+    width: 100%;
+    background: #bed7f1;
+    position: fixed;
+    top: 0;
+    z-index: 2
+}
+.company img{
+    height: 24px;
+    margin-top: 13px;
+    margin-left: 2%;
+    float: left;
+
+
+}
+.company span{
+    font-size: 13px;
+    line-height: 56px;
+    float: left;
+}
     .fade-enter-active, .fade-leave-active {
         transition: opacity .5s;
     }
@@ -93,11 +120,9 @@
     }
 
     .swiper-slide1{
-        background: skyblue;
     }
 
     .swiper-slide2{
-        background: yellowgreen;
     }
 
     .swiper-slide3{
@@ -105,5 +130,33 @@
     }
     .page h3{
       margin: 0
+    }
+    .question{
+            color: #4c5667;
+            width: 80%;
+            margin-left: 10%;
+            text-align: left;
+            line-height: 30px;
+            font-size: 15px;
+
+    }
+    .gongsi{
+        width: 100%;
+        margin-top: 50px
+    }
+    .swiper-slide2 p{
+        margin: 0 6% 0 2%;  
+        line-height: 30px;
+        font-size: 15px;
+        width: 92%;
+        text-align: left;
+            
+    }
+    .swiper-slide1 p{
+         margin: 0 6% 0 2%;  
+        line-height: 40px;
+        font-size: 17px;
+        width: 92%;
+        text-align: left;
     }
 </style>
