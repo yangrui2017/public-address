@@ -49,13 +49,27 @@ const router = new Router({
       path: '/member-welcome',
       name: 'member-welcome',
       component: () => import('@/views/member-welcome')
+    },
+    {
+      path: '/user-address',
+      name: 'member-welcome',
+      component: () => import('@/views/user-address')
+    },
+    {
+      path: '/mm-activity',
+      name: 'mm-activity',
+      component: () => import('@/views/mm-activity')
+    },
+    {
+      path: '/news-information',
+      name: 'news-information',
+      component: () => import('@/views/news-information')
     }
     
   ]
 })
 router.afterEach((to, from) => { // 跳转后，不需要 next
 //路由每次走
-    
 })
 
 
