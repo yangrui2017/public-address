@@ -4,7 +4,7 @@
     <header>
       <img :src="headerimg"
            class="headerimg" />
-      <div class="header">好友分享积分多多哦！</div>
+      <div class="header">好友分享积分多多！</div>
     </header>
     <div class="container">
       <div class="headerh3">
@@ -39,13 +39,49 @@ export default {
 
     }
   },
+  created () {
+    var openid = localStorage.getItem('openid')
+    if (openid == 'undefined' || openid == null) {
+      var _that = this
+      var urls = window.location.href.split('?').toString()
+      var code = _that.getQueryString('code')
+
+      if (code !== '' && code !== null && code !== 'undefined') {
+        _that.$http
+          .get(_that.$api + '/wx/memberinfo_by_code?code=' + code)
+          .then(function (response) {
+            localStorage.setItem('openid', response.data.openid)
+            localStorage.setItem('userinfo', JSON.stringify(response.data))
+          })
+          .catch(function (error) {
+            console.log(error)
+          })
+      } else {
+        //					获取code
+        let formDatas = new FormData()
+        formDatas.append('r_url', urls)
+        _that.$http.post(_that.$api + '/wx/wx_js_sign', formDatas)
+          .then(function (response) {
+            urls = encodeURIComponent(urls)
+            let link = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' +
+              response.data.appId +
+              '&redirect_uri=' +
+              urls +
+              '&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect'
+            window.location.replace(link)
+          })
+          .catch(function (error) {
+            console.log(error)
+          })
+      }
+    }
+  },
   mounted () {
     var _that = this
     setTimeout(function () {
       _that._data.headerimg = JSON.parse(localStorage.getItem('userinfo')).headimgurl
-      _that._data.nickname = JSON.parse(localStorage.getItem('userinfo')).nickname
+      _that._data.nickname = JSON.parse(localStorage.getItem('userinfo')).nick
       var unionid = JSON.parse(localStorage.getItem('userinfo')).unionid
-      alert(unionid)
       _that.$http.post(_that.$api + '/wx/event/user_event/by_usertype/', {
         'unionid': unionid,
         'user_type': 'member'
@@ -65,6 +101,12 @@ export default {
     }, 800)
   },
   methods: {
+    getQueryString (name) {
+      var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
+      var r = window.location.search.substr(1).match(reg)
+      if (r != null) return unescape(r[2])
+      return null
+    },
     trim (url) {
       url = url.replace(/\]/g, '')
       url = url.replace(/\[/g, '')

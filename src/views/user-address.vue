@@ -51,13 +51,49 @@ export default {
 
     }
   },
-  created () { },
+  created () {
+    var openid = localStorage.getItem('openid')
+    if (openid == 'undefined' || openid == null) {
+      var _that = this
+      var urls = window.location.href.split('?').toString()
+      var code = _that.getQueryString('code')
+
+      if (code !== '' && code !== null && code !== 'undefined') {
+        _that.$http
+          .get(_that.$api + '/wx/memberinfo_by_code?code=' + code)
+          .then(function (response) {
+            localStorage.setItem('openid', response.data.openid)
+            localStorage.setItem('userinfo', JSON.stringify(response.data))
+          })
+          .catch(function (error) {
+            console.log(error)
+          })
+      } else {
+        //					获取code
+        let formDatas = new FormData()
+        formDatas.append('r_url', urls)
+        _that.$http.post(_that.$api + '/wx/wx_js_sign', formDatas)
+          .then(function (response) {
+            urls = encodeURIComponent(urls)
+            let link = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' +
+              response.data.appId +
+              '&redirect_uri=' +
+              urls +
+              '&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect'
+            window.location.replace(link)
+          })
+          .catch(function (error) {
+            console.log(error)
+          })
+      }
+    }
+  },
   mounted () {
     this.getcity()
     var _that = this
     var urls = window.location.href.split('?')[0]
     _that._data.headerimg = JSON.parse(localStorage.getItem('userinfo')).headimgurl
-    _that._data.nickname = JSON.parse(localStorage.getItem('userinfo')).nickname
+    _that._data.nickname = JSON.parse(localStorage.getItem('userinfo')).nick
     // 获取微信分享sdkconfig
     let formData = new FormData()
     formData.append('r_url', urls) // 'file' 可变 相当于 input 表单的name 属性
@@ -71,6 +107,12 @@ export default {
       })
   },
   methods: {
+    getQueryString (name) {
+      var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
+      var r = window.location.search.substr(1).match(reg)
+      if (r != null) return unescape(r[2])
+      return null
+    },
     // 查询
     query () {
       var _that = this
