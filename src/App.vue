@@ -1,62 +1,73 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
 <script>
+window.onload = function () {
+  document.addEventListener('touchstart', function (event) {
+    if (event.touches.length > 1) {
+      event.preventDefault()
+    }
+  })
+  document.addEventListener('gesturestart', function (event) {
+    event.preventDefault()
+  })
+}
 export default {
-  name: "App",
-  created() {
-var openid = localStorage.getItem("openid");
-var onoff=true;
-      if ( openid == "undefind" || openid == null ) {
-      var _that = this;
-      var urls = window.location.href.split("?").toString();
-      var code = _that.getQueryString("code");
-      if (code !== "" && code !== null && code !== undefined) {
+  name: 'App',
+  created () {
+    var openid = localStorage.getItem('openid')
+    if (openid == 'undefined' || openid == null) {
+      var _that = this
+      var urls = window.location.href.split('?').toString()
+      var code = _that.getQueryString('code')
+
+      if (code !== '' && code !== null && code !== 'undefined') {
+        alert(code)
         _that.$http
-          .get(_that.$api+"/wx/userinfo_by_code?code=" + code)
-          .then(function(response) {
-             localStorage.setItem("openid",response.data.openid);
-              localStorage.setItem("userinfo",JSON.stringify(response.data));
-                
+          .get(_that.$api + '/wx/memberinfo_by_code?code=' + code)
+          .then(function (response) {
+            localStorage.setItem('openid', response.data.openid)
+            localStorage.setItem('userinfo', JSON.stringify(response.data))
           })
-          .catch(function(error) {
-            console.log(error);
-          });
+          .catch(function (error) {
+            console.log(error)
+          })
       } else {
+        alert('我走授权了')
         //					获取code
-         let formDatas = new FormData();
-        formDatas.append( "r_url",urls);
-        _that.$http.post(_that.$api+"/wx/wx_js_sign", formDatas)
-          .then(function(response) {
-            urls=encodeURIComponent(urls);
-            let link ="https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
+        let formDatas = new FormData()
+        formDatas.append('r_url', urls)
+        _that.$http.post(_that.$api + '/wx/wx_js_sign', formDatas)
+          .then(function (response) {
+            urls = encodeURIComponent(urls)
+            let link = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' +
               response.data.appId +
-              "&redirect_uri=" +
+              '&redirect_uri=' +
               urls +
-              "&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect";
-             window.location.replace(link);
+              '&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect'
+            window.location.replace(link)
           })
-          .catch(function(error) {
-            console.log(error);
-          });
+          .catch(function (error) {
+            console.log(error)
+          })
       }
     }
   },
-  mounted() {
-   
+  mounted () {
+
   },
   methods: {
-    getQueryString(name) {
-      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-      var r = window.location.search.substr(1).match(reg);
-      if (r != null) return unescape(r[2]);
-      return null;
+    getQueryString (name) {
+      var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
+      var r = window.location.search.substr(1).match(reg)
+      if (r != null) return unescape(r[2])
+      return null
     }
   }
-};
+}
 </script>
 
 <style>

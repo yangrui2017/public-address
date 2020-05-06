@@ -14,19 +14,30 @@
                 content:{}
             }
         },
-        methods: {},
         computed: {
            
         },
         mounted() {
             var _that=this;
-         	_that.$http.get(_that.$api + "/wx/event/choose_template/get_content?news_id=5",)
+            
+      var  news_id= _that.getQueryString("news_id");
+      
+         	_that.$http.get(_that.$api + "/wx/event/choose_template/get_content?news_id="+news_id)
 					.then(function(response) {
+                        console.log(response)
                         _that._data.content=response.data
 					})
 					.catch(function(error) {
 					});
         },
+          methods: {
+                getQueryString(name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]);
+                return null;
+                }
+            },
         watch: {}
     }
 </script>
